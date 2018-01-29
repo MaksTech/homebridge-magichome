@@ -116,6 +116,11 @@ MagicHomeAccessory.prototype.setToCurrentColor = function() {
         return
     }
 
+    if(color.S == 0 && color.H == 0 && !this.purewhite && this.brightness == 100) {
+        this.setToFullWhite();
+        return 
+    }
+
 	var brightness = this.brightness;
 	var converted = convert.hsl.rgb([color.H, color.S, color.L]);
 
@@ -126,6 +131,13 @@ MagicHomeAccessory.prototype.setToCurrentColor = function() {
 MagicHomeAccessory.prototype.setToWarmWhite = function() {
     var brightness = this.brightness;
     this.sendCommand('-w ' + brightness);
+};
+
+MagicHomeAccessory.prototype.setToFullWhite = function() {
+    var brightness = this.brightness;
+    var base = '-x ' + this.setup + ' -c';
+    this.sendCommand(base + ' -w ' + brightness + ' -c255,255,255');
+    this.log('SET TO FULL WHITE');
 };
 
 // MARK: - POWERSTATE
